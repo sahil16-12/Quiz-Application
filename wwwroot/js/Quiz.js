@@ -22,6 +22,63 @@
 var dataTable;
 var complete = false;
 
+//function loadDataTable() {
+//    dataTable = $('#quizListTable').DataTable({
+//        "ajax": {
+//            "url": "/quiz/getallquizzes",
+//            "type": "GET",
+//            "datatype": "json"
+//        },
+//        "columns": [
+//            { "data": null},
+//            { "data": "title",
+//                "render": function (data, type, row, meta) {
+//                    return `<a href="/quiz/quiz?id=${row.id}" style="cursor:pointer; width: 120px;">
+//                                ${data}
+//                            </a>`
+//                },
+//                "width": "40%" },
+//            { "data": "articleId", "width": "20%" },
+//            { "data": "createdStr", "width": "20%" },
+//            {
+//                "data": "id",
+//                "render": function (data) {
+//                    return `<div class="text-center">
+//                        <a class="btn btn-danger text-white" style="cursor:pointer; width: 120px;"
+//                            onclick=Delete('quiz/Delete?id=${data}')>
+//                            Delete
+//                        </a>
+//                    </div>`;
+//                },
+//                "width": "20%"
+//            }
+//        ],
+//        "language": {
+//            "emptyTable": "no data found"
+//        },
+//        "width": "100%",
+//        "columnDefs": [
+//            {
+//                "searchable": false,
+//                "orderable": false,
+//                "targets": 0
+//            }
+//        ],
+//        "order": [
+//            [1, 'asc']
+//        ]
+//    });
+
+//    dataTable.on('order.dt search.dt', function () {
+//        dataTable.column(0, {
+//            search: 'applied',
+//            order: 'applied'
+//        }).nodes().each(function (cell, i) {
+//            cell.innerHTML = i + 1;
+//        });
+//    }).draw();
+//}
+
 function loadDataTable() {
     dataTable = $('#quizListTable').DataTable({
         "ajax": {
@@ -30,25 +87,33 @@ function loadDataTable() {
             "datatype": "json"
         },
         "columns": [
-            { "data": null},
-            { "data": "title",
+            { "data": null },
+            {
+                "data": "title",
                 "render": function (data, type, row, meta) {
                     return `<a href="/quiz/quiz?id=${row.id}" style="cursor:pointer; width: 120px;">
                                 ${data}
                             </a>`
                 },
-                "width": "40%" },
+                "width": "40%"
+            },
             { "data": "articleId", "width": "20%" },
             { "data": "createdStr", "width": "20%" },
             {
                 "data": "id",
-                "render": function (data) {
-                    return `<div class="text-center">
-                        <a class="btn btn-danger text-white" style="cursor:pointer; width: 120px;"
-                            onclick=Delete('quiz/Delete?id=${data}')>
-                            Delete
-                        </a>
-                    </div>`;
+                "render": function (data, type, row, meta) {
+                    if (userRole === 'Admin') {  // Check if the user is an Admin
+                        return `<div class="text-center">
+                                    <a class="btn btn-danger text-white" style="cursor:pointer; width: 120px;"
+                                        onclick=Delete('quiz/Delete?id=${data}')>
+                                        Delete
+                                    </a>
+                                </div>`;
+                    } else {
+                        return `<div class="text-center">
+                                    <span class="text-muted">No Action</span>
+                                </div>`;
+                    }
                 },
                 "width": "20%"
             }
@@ -87,7 +152,6 @@ function Delete(deleteUrl) {
         buttons: true,
         dangerMode: true
     }).then((willDelete) => {
-        // If user selected yes
         if (willDelete) {
             $.ajax({
                 type: "DELETE",
@@ -118,26 +182,25 @@ function answerOnClick(questionIndex, answer) {
 
     document.getElementById("question+" + questionIndex + '+' + answer).classList.add("btn-warning");
 }
-
 function CompleteQuiz() {
-    console.log("Button clicked"); 
     var elemList = document.getElementsByClassName("btn-warning");
 
     if (elemList.length != 4) {
         toastr.error("Please complete the quiz");
-
         return;
     }
 
-    var correctCount = 0;  
+    var correctCount = 0;
+    var urlParams = new URLSearchParams(window.location.search);
+    var quizId = urlParams.get('id');
+    var score = 0;
 
-    // Loop through all questions to check the answers
     for (var i = 3; i >= 0; i--) {
         var correctAnswer = document.getElementById('correct+' + i).value;
         var givenAnswer = elemList[i].getAttribute("for");
 
         if (givenAnswer == correctAnswer) {
-            correctCount++; // Increment the count for each correct answer
+            correctCount++;
             elemList[i].classList.add("btn-success");
         } else {
             elemList[i].classList.add("btn-danger");
@@ -146,11 +209,39 @@ function CompleteQuiz() {
         elemList[i].classList.remove("btn-warning");
     }
 
+    score = correctCount;
+    console.log(userId + " " + quizId + " " + score);
     complete = true;
-    document.getElementById("completeBtn").style.visibility = "hidden"; 
+    document.getElementById("completeBtn").style.visibility = "hidden";
 
-    ShowResultCard(correctCount);
+    // Create FormData object and append data
+    var formData = new FormData();
+    formData.append("userId", userId); // Make sure userId is available globally
+    formData.append("quizId", quizId);
+    formData.append("score", score);
+
+    $.ajax({
+        url: '/Quiz/CompleteQuiz',
+        type: 'POST',
+        processData: false,  // Don't process the data
+        contentType: false,  // Don't set content type header
+        data: formData,      // Use formData object for the data
+        success: function (response) {
+            if (response.success) {
+                toastr.success("Quiz completed and saved successfully!");
+                ShowResultCard(correctCount);
+            } else {
+                toastr.error("Failed to save the quiz: " + response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            toastr.error("An error occurred while saving the quiz.");
+            console.error(error);
+        }
+    });
 }
+
+
 
 function ShowResultCard(correctCount) {
 

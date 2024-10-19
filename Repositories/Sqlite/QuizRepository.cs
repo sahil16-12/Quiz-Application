@@ -2,6 +2,7 @@
 using QuizPortal.Data;
 using QuizPortal.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuizPortal.Repositories.Sqlite
@@ -34,5 +35,20 @@ namespace QuizPortal.Repositories.Sqlite
         {
             _db.Quizzes.Remove(quiz);
         }
+
+        public async Task<List<CompletedQuiz>> GetCompletedQuizzesForUserAsync(int userId)
+        {
+            return await _db.CompletedQuizzes
+                .Where(cq => cq.UserId == userId)
+                .Include(cq => cq.Quiz) // Include the related Quiz entity if you need quiz details
+                .ToListAsync();
+        }
+
+        public async Task CreateCompletedQuizAsync(CompletedQuiz completedQuiz)
+        {
+            await _db.CompletedQuizzes.AddAsync(completedQuiz);
+            await _db.SaveChangesAsync(); 
+        }
+
     }
 }

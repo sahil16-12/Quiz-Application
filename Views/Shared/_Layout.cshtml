@@ -28,16 +28,23 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex">
                     <div class="row col-6">
                         <ul id="leftNav" class="navbar-nav">
-                            @if (HttpContextAccessor.HttpContext.Session.GetString("SessionUserId") == null)
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("SessionUserId") != null)
                             {
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Quiz" asp-action="CreateQuiz">Create Quiz</a>
-                                </li>
+                                var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole"); 
+
+                                if (userRole == "Admin")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" asp-area="" asp-controller="Quiz" asp-action="CreateQuiz">Create Quiz</a>
+                                    </li>
+                                }
+
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="" asp-controller="Quiz" asp-action="Index">Quizzes</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Quiz" asp-action="MyQuizzes">My Quizzes</a>
                                 </li>
                             }
                         </ul>
@@ -75,7 +82,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - QuizPortal - Elif Ozer
+            &copy; 2024 - QuizPortal
         </div>
     </footer>
 

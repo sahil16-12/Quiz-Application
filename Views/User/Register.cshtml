@@ -14,30 +14,46 @@
         <form id="registerForm" method="post" asp-action="Register">
             <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
+            <!-- Username Field -->
             <div class="form-group row">
                 <div class="col-2 offset-1">
                     <label asp-for="Username"></label>
                 </div>
-
                 <div class="col-8">
                     <input asp-for="Username" placeholder="Enter username" class="form-control" />
                     <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
             </div>
 
+            <!-- Password Field -->
             <div class="form-group row">
                 <div class="col-2 offset-1">
                     <label asp-for="Password"></label>
                 </div>
-
                 <div class="col-8">
                     <input type="password" asp-for="Password" placeholder="Enter password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
 
+            <!-- Role Dropdown -->
+            <div class="form-group row">
+                <div class="col-2 offset-1">
+                    <label asp-for="Role"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Role" class="form-control">
+                        <option value="">Select Role</option>
+                        <option value="Admin">Admin</option>
+                        <option value="User">User</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+            </div>
+
             <br />
 
+            <!-- Register Button -->
             <div class="form-group row">
                 <div class="col-3 offset-8">
                     <button type="button" onclick="Register();" class="btn btn-info form-control">Register</button>
@@ -47,7 +63,7 @@
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/User.js"></script>
 }

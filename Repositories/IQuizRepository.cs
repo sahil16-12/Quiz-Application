@@ -13,5 +13,9 @@ namespace QuizPortal.Repositories
         Task<ICollection<Quiz>> GetAllQuizzesAsync();
 
         void DeleteQuiz(Quiz quiz);
+
+        Task<List<CompletedQuiz>> GetCompletedQuizzesForUserAsync(int userId);
+
+        Task CreateCompletedQuizAsync(CompletedQuiz completedQuiz);
     }
 }

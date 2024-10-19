@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,5 +21,7 @@ namespace QuizPortal.Models
         public string Description { get; set; }
 
         public DateTime Created { get; set; } = DateTime.UtcNow;
+
+        public ICollection<CompletedQuiz> CompletedQuizzes { get; set; } = new List<CompletedQuiz>();
     }
 }

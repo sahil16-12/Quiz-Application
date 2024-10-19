@@ -34,6 +34,11 @@ namespace QuizPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserDto userDto)
         {
+            if (string.IsNullOrEmpty(userDto.Role))
+            {
+                return Json(new { success = false, message = "Role is required." });
+            }
+
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "User register validation failed" });
@@ -49,7 +54,9 @@ namespace QuizPortal.Controllers
             User user = _mapper.Map<User>(userDto);
 
             await userRepository.CreateUserAsync(user);
+
             await _repositoryFactory.SaveAsync();
+            HttpContext.Session.SetString("UserRole", userDto.Role);
 
             return Json(new { success = true, message = "Register successful", url = Url.Action("Login", "User") });
         }
@@ -73,6 +80,9 @@ namespace QuizPortal.Controllers
 
             HttpContext.Session.SetString(Constants.SessionUserId, userFromDb.Id.ToString());
 
+
+            HttpContext.Session.SetString("UserRole", userFromDb.Role);
+
             return Json(new { success = true, message = "Login successful", url = Url.Action("Index", "Home") });
         }
 
@@ -90,7 +100,10 @@ namespace QuizPortal.Controllers
         [HttpGet]
         public IActionResult Logout()
         {
+
             HttpContext.Session.Remove(Constants.SessionUserId);
+
+            HttpContext.Session.Clear(); 
 
             return RedirectToAction("Login", "User");
         }

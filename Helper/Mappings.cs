@@ -12,6 +12,7 @@ namespace QuizPortal.Helper
             CreateMap<ArticleDto, Quiz>().ReverseMap();
             CreateMap<QuestionDto, Question>().ReverseMap();
             CreateMap<QuizDto, Quiz>().ReverseMap();
+            CreateMap<CompletedQuiz, CompletedQuizDto>().ReverseMap();
         }
     }
 }

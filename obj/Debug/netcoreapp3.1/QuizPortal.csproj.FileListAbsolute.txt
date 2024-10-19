@@ -396,3 +396,4 @@ C:\Users\sahil\source\repos\dotnetcore--quiz-portal\QuizPortal\obj\Debug\netcore
 C:\Users\sahil\source\repos\dotnetcore--quiz-portal\QuizPortal\obj\Debug\netcoreapp3.1\QuizPortal.dll
 C:\Users\sahil\source\repos\dotnetcore--quiz-portal\QuizPortal\obj\Debug\netcoreapp3.1\QuizPortal.pdb
 C:\Users\sahil\source\repos\dotnetcore--quiz-portal\QuizPortal\obj\Debug\netcoreapp3.1\QuizPortal.genruntimeconfig.cache
+C:\Users\sahil\source\repos\dotnetcore--quiz-portal\QuizPortal\obj\Debug\netcoreapp3.1\Razor\Views\Quiz\MyQuizzes.cshtml.g.cs

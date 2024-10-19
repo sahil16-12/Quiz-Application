@@ -2,46 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizPortal.Data;
 
 namespace QuizPortal.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241019074405_AddRoleToUser")]
+    partial class AddRoleToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
-
-            modelBuilder.Entity("CompletedQuiz", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CompletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("QuizId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuizId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CompletedQuizzes");
-                });
 
             modelBuilder.Entity("QuizPortal.Models.Question", b =>
                 {
@@ -143,25 +118,6 @@ namespace QuizPortal.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CompletedQuiz", b =>
-                {
-                    b.HasOne("QuizPortal.Models.Quiz", "Quiz")
-                        .WithMany("CompletedQuizzes")
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QuizPortal.Models.User", "User")
-                        .WithMany("CompletedQuizzes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quiz");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("QuizPortal.Models.Question", b =>
                 {
                     b.HasOne("QuizPortal.Models.Quiz", "Quiz")
@@ -171,16 +127,6 @@ namespace QuizPortal.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Quiz");
-                });
-
-            modelBuilder.Entity("QuizPortal.Models.Quiz", b =>
-                {
-                    b.Navigation("CompletedQuizzes");
-                });
-
-            modelBuilder.Entity("QuizPortal.Models.User", b =>
-                {
-                    b.Navigation("CompletedQuizzes");
                 });
 #pragma warning restore 612, 618
         }

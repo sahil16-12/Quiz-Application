@@ -1,0 +1,26 @@
+﻿@model List<QuizPortal.Models.Dtos.CompletedQuizDto>
+@{
+    ViewData["Title"] = "My Quizzes";
+}
+
+<h2>My Quizzes</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Quiz Title</th>
+            <th>Score</th>
+            <th>Completed At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quiz in Model)
+        {
+            <tr>
+                <td>@quiz.QuizTitle</td>
+                <td>@quiz.Score</td>
+                <td>@quiz.CompletedAt.ToString("g")</td>
+            </tr>
+        }
+    </tbody>
+</table>
