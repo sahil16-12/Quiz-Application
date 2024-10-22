@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The **Quiz Application** is designed to allow normal users to take quizzes and administrators to create, manage, and delete quizzes. Users can view their quiz history and track whether they have completed specific quizzes. Admins can view all quizzes and manage them accordingly.
+The **Quiz Portal** is designed to allow normal users to take quizzes and administrators to create, manage, and delete quizzes. Users can view their quiz history and track whether they have completed specific quizzes. Admins can view all quizzes and manage them accordingly.
 
 The key features of the application include:
 - **Quiz Creation**: Admin users can create new quizzes.
