@@ -24,7 +24,6 @@ Before you begin, ensure you have met the following requirements:
 - .NET Core SDK (>= 6.0)
 - Visual Studio or any other preferred IDE
 - SQL Server for database (or any other configured database in your project)
-- Node.js (for frontend dependencies, if required)
 
 ## Getting Started
 
